@@ -1,13 +1,17 @@
-#Librerias utilizadas para hacerla interfaz graica del progema
+#Nos ayuda en la interfaz que hay entre el usuario y el programa
 from tkinter import *
-import tkinter as tk 
-#Librerias para que ayudan con el calculo matematico y todas la operaciones necesarias para el funcionamiento del programa
+import tkinter as tk
+
+#Esta biblioteca importa todas las operaciones aritmeticas y funciones matematicas
 import math
-import numpy as np 
-#Libreria usada para la realizacion de graficas de las funciones
+
+#nos ayuda con el calculo de operaciones a nivel matricial
+import numpy as np
+
+#Esta biblioteca ayuda con la graficación de las restricciones
 from matplotlib import pyplot as plt
 
-
+colores = ('C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6')
 #Clase para describir cada punto
 class punto:
   def __init__(self,x,y):
@@ -201,12 +205,13 @@ class Calcular_Puntos(object):
             
             y_vals=areaSol[0]
             y_vali=areaSoli[0]
+
             
             #Colorea el area seleccionda teniendo encuenta la desigualdad
             if self.__Valores[i][2] == "<=":
-                plt.fill_between(x_vals,0, y_vals,interpolate=True, alpha=0.15, color='b')
+                plt.fill_between(x_vals,0, y_vals,interpolate=True, alpha=0.3, color=colores[i])
             else:
-                plt.fill_between(x_vals,y_vali, 800,interpolate=True, alpha=0.15, color='b')
+                plt.fill_between(x_vals,y_vali, 800,interpolate=True, alpha=0.3, color=colores[i])
 
 
         #Grafica las funciones
@@ -238,7 +243,7 @@ class Calcular_Puntos(object):
                 #print(t)
                 return self.__m[i]*x + self.__b[i]
 
-            plt.plot(a, [f(i) for i in a])
+            plt.plot(a, [f(i) for i in a], color=colores[i], label="R"+repr(i+1))
             
             plt.xlim(0,400)
             plt.ylim(0,400)
@@ -246,8 +251,9 @@ class Calcular_Puntos(object):
         
         plt.xlim(0,400)
         plt.ylim(0,400)
-        
-        
+        plt.legend(loc='upper left')
+        plt.grid(color='gray', linestyle='--', linewidth=1)
+       
 
     #Metodo en el cual se calcula la region factible de la funcion objetivo
     def region_factible(self):
@@ -388,6 +394,11 @@ class Calcular_Puntos(object):
                     
                     pos_max=posibles.index(max(posibles))
                     pval = poxi[pos_max]
+                    plt.scatter(intersex[pval][0], intersex[pval][1], 50, color='black')
+                    
+                    plt.annotate('('+repr((intersex[pval][0]))+','+repr((intersex[pval][1]))+')',xy=(intersex[pval][0], intersex[pval][1]), xycoords='data',
+            xytext=(25,25 ), textcoords='offset points', fontsize=12,
+            arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=.2"))
                     
                     #
                     texto = "Valor máximo: " + str(num_max) + "    (x = " + str(intersex[pval][0])+", y = "+str(intersex[pval][1])+")"
@@ -396,7 +407,10 @@ class Calcular_Puntos(object):
                     num_min=min(posibles)
                     pos_min=posibles.index(min(posibles))
                     pval = poxi[pos_min]
-                    
+                    plt.scatter(intersex[pval][0], intersex[pval][1], 50, color='black')
+                    plt.annotate('('+repr((intersex[pval][0]))+','+repr((intersex[pval][1]))+')',xy=(intersex[pval][0], intersex[pval][1]), xycoords='data',
+            xytext=(25,25 ), textcoords='offset points', fontsize=12,
+            arrowprops=dict(arrowstyle="->", connectionstyle="arc3,rad=.2"))
                     texto = "Valor minimo: " + str(num_min) + "    (x = " + str(intersex[pval][0])+", y = "+str(intersex[pval][1])+")"
             
             else:
